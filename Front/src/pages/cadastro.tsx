@@ -7,8 +7,7 @@ import FormInputText from "../components/FormInputText";
 import { ILogInRequest, ILogInResponse } from "../interfaces/Interfaces";
 import { AUTO_HIDE_DURATION_SNACKBAR, UNEXPECTED_ERROR_MSG } from "../util/constantes";
 
-export default function Login() {
-
+export default function Cadastro() {
     const [openSnackbar, setOpenSnackbar] = useState(false);
 
     const [messageSnackbar, setMessageSnackbar] = useState('');
@@ -49,24 +48,33 @@ export default function Login() {
         <>
             <Paper  
             elevation={12}
-            className={ 'login centralizado' }
+            className={ 'cadastro centralizado' }
             >
 
                 <Typography 
                 variant="h5" 
                 component="div"
                 align="center"
-                >Login</Typography>
+                >Cadastro</Typography>
                 
                 <Grid 
                 container 
-                direction="column"
+                direction="row"
                 justifyContent="center"
                 alignItems="center"
                 spacing={2}
                 >
 
-                    <Grid item xs={12} md={12}>
+                    <Grid item xs={12} md={6}>
+                        <FormInputText
+                        name='nome'
+                        control={control}
+                        label='Nome'
+                        variant='standard'
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
                         <FormInputText
                         name='email'
                         control={control}
@@ -75,11 +83,48 @@ export default function Login() {
                         />
                     </Grid>
 
-                    <Grid item xs={12} md={12}>
+                    <Grid item xs={12} md={6}>
+                        <FormInputText
+                        name='endereco'
+                        control={control}
+                        label='Endereço'
+                        variant='standard'
+                        />
+                    </Grid>
+
+                    <Grid item xs={4} md={2}>
+                        <FormInputText
+                        name='numero'
+                        control={control}
+                        label='Número'
+                        variant='standard'
+                        />
+                    </Grid>
+
+                    <Grid item xs={8} md={4}>
+                        <FormInputText
+                        name='cep'
+                        control={control}
+                        label='CEP'
+                        variant='standard'
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
                         <FormInputText
                         name='password'
                         control={control}
                         label='Senha'
+                        variant='standard'
+                        type='password'
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
+                        <FormInputText
+                        name='password-confirmation'
+                        control={control}
+                        label='Repita a senha'
                         variant='standard'
                         type='password'
                         />
@@ -96,7 +141,7 @@ export default function Login() {
                             item>
                             <Button 
                             onClick={handleSubmit(onSubmit)} 
-                            variant={'contained'}>Entrar</Button>
+                            variant={'contained'}>Cadastrar</Button>
                             </Grid>
 
                             <Grid 
@@ -109,9 +154,6 @@ export default function Login() {
                         </Grid>
                     </Grid>
 
-                    <Grid item>
-                        <Typography variant="body2" component="div">Não tem uma conta? <Link href="/home">Cadastre-se.</Link></Typography>
-                    </Grid>
                 </Grid>
             </Paper>
 
@@ -130,4 +172,3 @@ export default function Login() {
         </>
     );
 }
-

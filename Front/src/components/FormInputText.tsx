@@ -14,7 +14,7 @@ export default function FormInputText(props: IFormInputTextProps) {
                 onChange={onChange}
                 value={props.defaultValue || value || ''}
                 type={props.type}
-                style={{minWidth: '250px' }}
+                style={{ width: '100%' }}
                 />
             )}
         />

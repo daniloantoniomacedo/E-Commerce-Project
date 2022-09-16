@@ -4,10 +4,12 @@ import Rotas from "./Routes";
 export default function App(){
     return (
     <>
-        <header style={{ width: '100%' }}>
+        <header>
             <ResponsiveAppBar/>
         </header>
-        <Rotas/>
+        <div className={ 'rotas' }>
+            <Rotas/>
+        </div>
     </>
     );
 }
