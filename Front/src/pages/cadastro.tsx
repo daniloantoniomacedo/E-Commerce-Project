@@ -1,11 +1,11 @@
-import { Alert, AlertColor, Button, Grid, Link, Paper, Snackbar, Typography } from "@mui/material";
+import { Alert, AlertColor, Button, Grid, Paper, Snackbar, Typography } from "@mui/material";
 import axios, { AxiosResponse } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
 import FormInputText from "../components/FormInputText";
-import { ILogInRequest, ILogInResponse } from "../interfaces/Interfaces";
-import { AUTO_HIDE_DURATION_SNACKBAR, UNEXPECTED_ERROR_MSG } from "../util/constantes";
+import { ILogInRequest, ILogInResponse, IMenuItem } from "../interfaces/Interfaces";
+import { AUTO_HIDE_DURATION_SNACKBAR, OPTIONS_UF, UNEXPECTED_ERROR_MSG } from "../util/constantes";
 
 export default function Cadastro() {
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -25,6 +25,7 @@ export default function Cadastro() {
     }
 
     const onSubmit = async (loginRequest: ILogInRequest) => {
+        console.log(loginRequest);
         giveFeedback('sucesso', 'success');
     }
     
@@ -43,6 +44,8 @@ export default function Cadastro() {
     const redirectAfterLogin = () => {
         return <Navigate to = { '/home' }/>;
     }
+
+    //-------------------------------------------------------------------------------------------
 
     return (
         <>
@@ -65,7 +68,7 @@ export default function Cadastro() {
                 spacing={2}
                 >
 
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={4}>
                         <FormInputText
                         name='nome'
                         control={control}
@@ -74,7 +77,16 @@ export default function Cadastro() {
                         />
                     </Grid>
 
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={2}>
+                        <FormInputText
+                        name='cpf'
+                        control={control}
+                        label='CPF'
+                        variant='standard'
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} md={4}>
                         <FormInputText
                         name='email'
                         control={control}
@@ -83,25 +95,17 @@ export default function Cadastro() {
                         />
                     </Grid>
 
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={2}>
                         <FormInputText
-                        name='endereco'
+                        name='celular'
                         control={control}
-                        label='Endereço'
+                        label='Celular'
                         variant='standard'
+                        mask='+55 (99) 9 9999-9999'
                         />
                     </Grid>
 
-                    <Grid item xs={4} md={2}>
-                        <FormInputText
-                        name='numero'
-                        control={control}
-                        label='Número'
-                        variant='standard'
-                        />
-                    </Grid>
-
-                    <Grid item xs={8} md={4}>
+                    <Grid item xs={12} md={2}>
                         <FormInputText
                         name='cep'
                         control={control}
@@ -110,7 +114,54 @@ export default function Cadastro() {
                         />
                     </Grid>
 
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={3}>
+                        <FormInputText
+                        name='cidade'
+                        control={control}
+                        label='Cidade'
+                        variant='standard'
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} md={3}>
+                        <FormInputText
+                        name='bairro'
+                        control={control}
+                        label='Bairro'
+                        variant='standard'
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} md={4}>
+                        <FormInputText
+                        name='endereco'
+                        control={control}
+                        label='Endereço'
+                        variant='standard'
+                        />
+                    </Grid>
+
+                    <Grid item xs={6} md={2}>
+                        <FormInputText
+                        name='numero'
+                        control={control}
+                        label='Nº'
+                        variant='standard'
+                        />
+                    </Grid>
+
+                    <Grid item xs={6} md={2}>
+                        <FormInputText
+                        select
+                        name='uf'
+                        control={control}
+                        label='UF'
+                        variant='standard'
+                        options={OPTIONS_UF}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} md={4}>
                         <FormInputText
                         name='password'
                         control={control}
@@ -120,7 +171,7 @@ export default function Cadastro() {
                         />
                     </Grid>
 
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={4}>
                         <FormInputText
                         name='password-confirmation'
                         control={control}

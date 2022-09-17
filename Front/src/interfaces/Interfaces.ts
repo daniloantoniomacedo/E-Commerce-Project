@@ -14,11 +14,23 @@ export interface ILogInResponse {
 
 // Props react components interfaces
 
+export interface IMenuItem {
+    value: string,
+    label: string,
+}
+
 export interface IFormInputTextProps {
     name: string, 
     defaultValue?: string,
     control: Control<any, any>, 
     label: string,
     variant: "standard" | "filled" | "outlined" | undefined,
-    type?: "password"
+    type?: "password" | "numeric",
+    error?: boolean,
+    helperText?: string,
+    inputProps?: any, 
+    mask?: any,
+    select?: boolean,
+    options?: IMenuItem[],
+
 }
