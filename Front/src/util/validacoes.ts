@@ -13,3 +13,7 @@ export function ehCepValido(value: string): boolean {
     return !value.includes('_');
 }
 
+
+export function limparMascara(value: string): string {
+    return value.replace(/,/g, "").replace(/\./g, "").replace(/-/g, "").replace(/_/g, "");
+}

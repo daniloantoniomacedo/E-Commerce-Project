@@ -14,6 +14,19 @@ export interface ILogInResponse {
     time: string;
 }
 
+export interface IViaCepResponse {
+    cep: string,
+    logradouro: string,
+    complemento: string,
+    bairro: string,
+    localidade: string,
+    uf: string,
+    ibge: string,
+    gia: string,
+    ddd: string,
+    siafi: string,
+}
+
 // Props react components interfaces
 
 export interface IMenuItem {

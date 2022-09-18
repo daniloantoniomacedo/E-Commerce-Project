@@ -4,9 +4,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
 import FormInputText from "../components/FormInputText";
-import { IFormValidador, ILogInRequest, ILogInResponse } from "../interfaces/Interfaces";
+import { IFormValidador, ILogInRequest, ILogInResponse, IViaCepResponse } from "../interfaces/Interfaces";
+import { consultarCep } from "../services/ViaCepService";
 import { AUTO_HIDE_DURATION_SNACKBAR, CAMPO_OBRIGATORIO, CELULAR, CEP, CPF, DATA_NASCIMENTO, EMAIL, NUMERO, OPTIONS_UF, SENHA, SENHA_CONFIRMACAO, UNEXPECTED_ERROR_MSG } from "../util/constantes";
-import { ehNumericoPositivo, ehNumeroCelularValido } from "../util/validacoes";
+import { ehNumericoPositivo, ehNumeroCelularValido, limparMascara } from "../util/validacoes";
 
 export default function Cadastro() {
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -83,12 +84,19 @@ export default function Cadastro() {
             flag = ehNumericoPositivo(valorCampo);
         }else if(nomeCampo === CELULAR){
             flag = ehNumeroCelularValido(valorCampo);
+        }else if(nomeCampo === CEP){
+            console.log(limparMascara(valorCampo));
+            consultarCep(limparMascara(valorCampo))
+                .then((response: AxiosResponse<IViaCepResponse, any>) => (console.log(response)))
+                .catch((error: any) => (console.log(error)));
         }
 
         console.log(flag);
         setValidador({ ...validador, [nomeCampo]: flag });
 
     }
+
+    
 
 
     return (
