@@ -8,6 +8,8 @@ export const UNEXPECTED_ERROR_MSG = "Erro inesperado! Tente novamente mais tarde
 
 export const AUTH0_CONNECTION = 'Username-Password-Authentication';
 
+export const REGEX_INTEIRO_POSITIVO = /^\d+$/;
+
 export const OPTIONS_UF: IMenuItem[] = [
     {
         value: 'AC',
@@ -114,3 +116,14 @@ export const OPTIONS_UF: IMenuItem[] = [
         label: 'TO'
     }
 ];
+
+export const CAMPO_OBRIGATORIO = 'Campo obrigatório';
+
+export const NUMERO = 'numero';
+export const CPF = 'cpf';
+export const DATA_NASCIMENTO = 'dataNascimento';
+export const EMAIL = 'email';
+export const CELULAR = 'celular';
+export const CEP = 'cep';
+export const SENHA = 'senha';
+export const SENHA_CONFIRMACAO = 'senhaConfirmacao';
