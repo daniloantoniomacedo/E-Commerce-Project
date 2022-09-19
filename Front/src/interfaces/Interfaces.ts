@@ -1,4 +1,3 @@
-import { type } from 'os';
 import { FocusEventHandler } from 'react';
 import { Control } from 'react-hook-form';
 
@@ -57,11 +56,28 @@ export interface IFormValidador {
     email: boolean, 
     celular: boolean,
     cep: boolean,
-    cidade:boolean,
-    bairro:boolean,
-    endereco:boolean,
-    numero:boolean,
-    uf:boolean,
-    senha:boolean,
+    cidade: boolean,
+    bairro: boolean,
+    endereco: boolean,
+    numero: boolean,
+    uf: boolean,
+    senha: boolean,
     senhaConfirmacao: boolean,
+}
+
+export interface IFormCadastro {
+    nome: string,
+    cpf: string,
+    dataNascimento: string, 
+    email: string, 
+    celular: string,
+    cep: string,
+    cidade: string,
+    bairro: string,
+    endereco: string,
+    enderecoComplemento: string,
+    numero: string,
+    uf: string,
+    senha: string,
+    senhaConfirmacao: string,
 }

@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.time.Duration;
 import java.util.Objects;
 
 import org.springframework.http.HttpStatus;
@@ -26,9 +27,9 @@ public class ViaCepService {
 	
 	private static void verificarEnderecoResponse(EnderecoResponse response) throws NegocioException {
 		if(Objects.isNull(response)) {
-			throw new NegocioException(HttpStatus.INTERNAL_SERVER_ERROR, "Falha de integração com o serviço da ViaCEP");
+			throw new NegocioException(HttpStatus.INTERNAL_SERVER_ERROR, Constantes.FALHA_INTEGRACAO_VIA_CEP);
 		} else if(Objects.nonNull(response.getErro())) {
-			throw new NegocioException(HttpStatus.NOT_FOUND, "CEP não encontrado");
+			throw new NegocioException(HttpStatus.NOT_FOUND, Constantes.CEP_NOT_FOUND);
 		}
 	}
 	
@@ -42,6 +43,7 @@ public class ViaCepService {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(String.format("https://viacep.com.br/ws/%s/json/", cep)))
+                    .timeout(Duration.ofSeconds(3L))
                     .GET()
                     .build();
 

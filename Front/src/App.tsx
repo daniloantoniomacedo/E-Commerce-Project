@@ -7,9 +7,9 @@ export default function App(){
         <header>
             <ResponsiveAppBar/>
         </header>
-        <div className={ 'rotas' }>
+        <main className={ 'rotas' }>
             <Rotas/>
-        </div>
+        </main>
     </>
     );
 }

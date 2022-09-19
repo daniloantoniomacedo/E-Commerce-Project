@@ -6,6 +6,8 @@ export const AUTO_HIDE_DURATION_SNACKBAR = 5000;
 
 export const UNEXPECTED_ERROR_MSG = "Erro inesperado! Tente novamente mais tarde.";
 
+export const CONSULTA_CEP_INDISPONIVEL = "Serviço para consulta de CEP indisponível. Insira o endereço manualmente.";
+
 export const AUTH0_CONNECTION = 'Username-Password-Authentication';
 
 export const REGEX_INTEIRO_POSITIVO = /^\d+$/;
@@ -119,11 +121,18 @@ export const OPTIONS_UF: IMenuItem[] = [
 
 export const CAMPO_OBRIGATORIO = 'Campo obrigatório';
 
+export const NOME = 'nome';
 export const NUMERO = 'numero';
 export const CPF = 'cpf';
 export const DATA_NASCIMENTO = 'dataNascimento';
 export const EMAIL = 'email';
 export const CELULAR = 'celular';
 export const CEP = 'cep';
+export const ENDERECO = 'endereco'
+export const COMPLEMENTO_ENDERECO = 'enderecoComplemento';
 export const SENHA = 'senha';
 export const SENHA_CONFIRMACAO = 'senhaConfirmacao';
+export const UF = 'uf';
+export const BAIRRO = 'bairro';
+export const CIDADE = 'cidade';
+

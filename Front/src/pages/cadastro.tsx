@@ -4,10 +4,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
 import FormInputText from "../components/FormInputText";
-import { IFormValidador, ILogInRequest, ILogInResponse, IViaCepResponse } from "../interfaces/Interfaces";
-import { consultarCep } from "../services/ViaCepService";
-import { AUTO_HIDE_DURATION_SNACKBAR, CAMPO_OBRIGATORIO, CELULAR, CEP, CPF, DATA_NASCIMENTO, EMAIL, NUMERO, OPTIONS_UF, SENHA, SENHA_CONFIRMACAO, UNEXPECTED_ERROR_MSG } from "../util/constantes";
-import { ehNumericoPositivo, ehNumeroCelularValido, limparMascara } from "../util/validacoes";
+import { IFormCadastro, IFormValidador, ILogInResponse, IViaCepResponse } from "../interfaces/Interfaces";
+import { consultarCep } from "../services/EnderecoService";
+import { AUTO_HIDE_DURATION_SNACKBAR, BAIRRO, CAMPO_OBRIGATORIO, CELULAR, CEP, CIDADE, COMPLEMENTO_ENDERECO, CONSULTA_CEP_INDISPONIVEL, CPF, DATA_NASCIMENTO, EMAIL, ENDERECO, NOME, NUMERO, OPTIONS_UF, SENHA, SENHA_CONFIRMACAO, UF } from "../util/constantes";
+import { ehCepValido, ehCpfValido, ehDataValida, ehEmailValido, ehNumericoPositivo, ehNumeroCelularValido, limparMascara } from "../util/validacoes";
 
 export default function Cadastro() {
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -18,17 +18,14 @@ export default function Cadastro() {
 
     const handleCloseSnackbar = () => setOpenSnackbar(false);
 
-    const { handleSubmit, reset, setValue, control } = useForm<ILogInRequest>();
-
     const giveFeedback = (message: string, severity: AlertColor) => {
         setOpenSnackbar(true);
         setMessageSnackbar(message);
         setSeveritySnackbar(severity);
     }
 
-    const onSubmit = async (loginRequest: ILogInRequest) => {
-        //setValue('email', 'email@email.com');
-        console.log(loginRequest);
+    const onSubmit = async (cadastroRequest: IFormCadastro) => {
+        console.log(cadastroRequest);
         giveFeedback('sucesso', 'success');
     }
     
@@ -36,11 +33,11 @@ export default function Cadastro() {
         giveFeedback(axiosResponse.data.response, 'success');
     }
 
-    const showErrorFeedBack = (error: any) => {
-        if(axios.isAxiosError(error)){
-            giveFeedback(error.message, 'error');
+    const showErrorFeedBack = (error: any, msgError: string) => {
+        if(axios.isAxiosError(error) && error.response && error.response.data){
+            giveFeedback(error.response.data as string, 'error');
         } else {
-            giveFeedback(UNEXPECTED_ERROR_MSG, 'error');
+            giveFeedback(msgError, 'error');
         }
     }
 
@@ -49,6 +46,8 @@ export default function Cadastro() {
     }
 
     //-------------------------------------------------------------------------------------------
+
+    const { handleSubmit, reset, setValue, getValues, control } = useForm<IFormCadastro>();
 
     const [desableNextButton, setDesableNextButton] = useState(false);
 
@@ -76,24 +75,51 @@ export default function Cadastro() {
 
         let flag: boolean = true;
 
-        valorCampo = valorCampo.trim();
-
         if(valorCampo === ''){ 
             flag = false;
         }else if(nomeCampo === NUMERO){
             flag = ehNumericoPositivo(valorCampo);
         }else if(nomeCampo === CELULAR){
             flag = ehNumeroCelularValido(valorCampo);
+        }else if(nomeCampo === CPF){
+            flag = ehCpfValido(valorCampo);
+        }else if(nomeCampo === DATA_NASCIMENTO){
+            flag = ehDataValida(valorCampo);
+        }else if(nomeCampo === EMAIL){
+            flag = ehEmailValido(valorCampo);
+        }else if(nomeCampo === SENHA){
+
+        }else if(nomeCampo === SENHA_CONFIRMACAO){
+
         }else if(nomeCampo === CEP){
-            console.log(limparMascara(valorCampo));
-            consultarCep(limparMascara(valorCampo))
-                .then((response: AxiosResponse<IViaCepResponse, any>) => (console.log(response)))
-                .catch((error: any) => (console.log(error)));
+            if(ehCepValido(valorCampo)){
+                flag = true;
+                atualizarEnderecoPeloCep(limparMascara(valorCampo));
+            }
         }
 
-        console.log(flag);
         setValidador({ ...validador, [nomeCampo]: flag });
 
+    }
+
+    const [cepPesquisado, setCepPesquisado] = useState<String>('');
+
+    const atualizarEnderecoPeloCep = (cep: string) => {
+        if(cep !== cepPesquisado){
+            console.log('pesquisou');
+            consultarCep(cep)
+            .then((response: AxiosResponse<IViaCepResponse, any>) => {
+                let viaCepResponse: IViaCepResponse = response.data;
+                setValue(ENDERECO, viaCepResponse.logradouro);
+                setValue(COMPLEMENTO_ENDERECO, viaCepResponse.complemento);
+                setValue(BAIRRO, viaCepResponse.bairro);
+                setValue(CIDADE, viaCepResponse.localidade);
+                setValue(UF, viaCepResponse.uf);
+            })
+            .catch((error: any) => 
+            (showErrorFeedBack(error, CONSULTA_CEP_INDISPONIVEL)));
+            setCepPesquisado(cep);
+        }
     }
 
     
@@ -122,7 +148,7 @@ export default function Cadastro() {
 
                     <Grid item xs={12} md={4}>
                         <FormInputText
-                        name='nome'
+                        name={NOME}
                         control={control}
                         label='Nome'
                         variant='standard'
@@ -198,7 +224,7 @@ export default function Cadastro() {
 
                     <Grid item xs={12} md={3}>
                         <FormInputText
-                        name='cidade'
+                        name={CIDADE}
                         control={control}
                         label='Cidade'
                         variant='standard'
@@ -210,7 +236,7 @@ export default function Cadastro() {
 
                     <Grid item xs={12} md={3}>
                         <FormInputText
-                        name='bairro'
+                        name={BAIRRO}
                         control={control}
                         label='Bairro'
                         variant='standard'
@@ -222,7 +248,7 @@ export default function Cadastro() {
 
                     <Grid item xs={12} md={4}>
                         <FormInputText
-                        name='endereco'
+                        name={ENDERECO}
                         control={control}
                         label='Endereço'
                         variant='standard'
@@ -234,7 +260,7 @@ export default function Cadastro() {
 
                     <Grid item xs={12} md={4}>
                         <FormInputText
-                        name='enderecoComplemento'
+                        name={COMPLEMENTO_ENDERECO}
                         control={control}
                         label='Complemento do endereço'
                         variant='standard'
@@ -256,7 +282,7 @@ export default function Cadastro() {
                     <Grid item xs={6} md={2}>
                         <FormInputText
                         select
-                        name='uf'
+                        name={UF}
                         control={control}
                         label='UF'
                         variant='standard'
